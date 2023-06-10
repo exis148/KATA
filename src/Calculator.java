@@ -35,7 +35,7 @@ public class Calculator {
         if (!(isArabicNumber(operand1) && isArabicNumber(operand2)) && !(isRomanNumber(operand1) && isRomanNumber(operand2)))
 
         {
-            throw new IllegalArgumentException("Калькулятор может работать только с арабскими или римскими цифрами одновременно");
+            throw new IllegalArgumentException("Нужны либо арабские, либо римские цифры одновременно");
         }
 
         int num1, num2;
@@ -48,12 +48,14 @@ public class Calculator {
             num2 = Integer.parseInt(operand2);
             if (num1 < 1 || num1 > 10 || num2 < 1 || num2 > 10) {
 
-                throw new IllegalArgumentException("Введены неподходящие числа. Калькулятор принимает числа от 1 до 10 включительно.");
+                throw new IllegalArgumentException("Некорректные числа. 0 - 10");
             }
         } else {
 
             num1 = romanToArabic.get(operand1);
+
             num2 = romanToArabic.get(operand2);
+
             isRoman = true;
 
 
@@ -68,16 +70,16 @@ public class Calculator {
             result = num1 * num2;
         } else if (operator.equals("/")) {
             if (num2 == 0) {
-                throw new IllegalArgumentException("Деление на ноль недопустимо");
+                throw new IllegalArgumentException("На 0 делить нельзя");
             }
             result = num1 / num2;
         } else {
-            throw new IllegalArgumentException("Неподдерживаемая операция. Поддерживаются только +, -, * и /");
+            throw new IllegalArgumentException("Операция не поддерживается. Поддерживаются только +, -, * и /");
         }
 
         if (isRoman) {
             if (result <= 0) {
-                throw new IllegalArgumentException("Результатом работы калькулятора с римскими числами могут быть только положительные числа");
+                throw new IllegalArgumentException("Результат не может быть отрицательным");
             }
             return arabicToRoman.get(result);
         } else {
