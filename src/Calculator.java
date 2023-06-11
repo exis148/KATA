@@ -42,7 +42,7 @@ public class Calculator {
         boolean isRoman = false;
 
 
-        if (isArabicNumber(operand1))
+        if (isArabicNumber(operand1)&&isArabicNumber(operand2))
         {
             num1 = Integer.parseInt(operand1);
             num2 = Integer.parseInt(operand2);
@@ -87,7 +87,7 @@ public class Calculator {
         }
     }
 
-    private static boolean isArabicNumber(String input) {
+    public static boolean isArabicNumber(String input) {
         try {
             Integer.parseInt(input);
             return true;
