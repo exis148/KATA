@@ -98,10 +98,10 @@ public class Calculator {
         }
     }
 
-    private static boolean isRomanNumber(String input) {
+     static boolean isRomanNumber(String input) {
         return romanToArabic.containsKey(input);
     }
-    private static final Map<String, Integer> romanToArabic = new HashMap<>();
+    public static final Map<String, Integer> romanToArabic = new HashMap<>();
 
     static {
 
@@ -117,7 +117,7 @@ public class Calculator {
         romanToArabic.put("X", 10);
     }
 
-    private static final Map<Integer, String> arabicToRoman = new HashMap<>();
+    public static final Map<Integer, String> arabicToRoman = new HashMap<>();
 
     static {
 
@@ -132,5 +132,14 @@ public class Calculator {
         arabicToRoman.put(8, "VIII");
         arabicToRoman.put(9, "IX");
         arabicToRoman.put(10, "X");
+        arabicToRoman.put(20, "XX");
+        arabicToRoman.put(30, "XXX");
+        arabicToRoman.put(40, "XL");
+        arabicToRoman.put(50, "L");
+        arabicToRoman.put(60, "LX");
+        arabicToRoman.put(70, "LXX");
+        arabicToRoman.put(80, "LXXX");
+        arabicToRoman.put(90, "XC");
+        arabicToRoman.put(100, "C");
     }
 }
