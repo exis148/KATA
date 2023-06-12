@@ -3,13 +3,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Calculator {
-
-
-
-
-    public static void main(String[] args)
-
-    {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите выражение: ");
         String expression = scanner.nextLine();
@@ -32,33 +26,23 @@ public class Calculator {
         String operator = parts[1];
         String operand2 = parts[2];
 
-        if (!(isArabicNumber(operand1) && isArabicNumber(operand2)) && !(isRomanNumber(operand1) && isRomanNumber(operand2)))
-
-        {
+        if (!(isArabicNumber(operand1) && isArabicNumber(operand2)) && !(isRomanNumber(operand1) && isRomanNumber(operand2))) {
             throw new IllegalArgumentException("Нужны либо арабские, либо римские цифры одновременно");
         }
 
         int num1, num2;
         boolean isRoman = false;
 
-
-        if (isArabicNumber(operand1)&&isArabicNumber(operand2))
-        {
+        if (isArabicNumber(operand1) && isArabicNumber(operand2)) {
             num1 = Integer.parseInt(operand1);
             num2 = Integer.parseInt(operand2);
             if (num1 < 1 || num1 > 10 || num2 < 1 || num2 > 10) {
-
-                throw new IllegalArgumentException("Некорректные числа. 0 - 10");
+                throw new IllegalArgumentException("Некорректные числа. Допустимы значения от 1 до 10");
             }
         } else {
-
-            num1 = romanToArabic.get(operand1);
-
-            num2 = romanToArabic.get(operand2);
-
+            num1 = romanToArabic(operand1);
+            num2 = romanToArabic(operand2);
             isRoman = true;
-
-
         }
 
         int result;
@@ -81,7 +65,7 @@ public class Calculator {
             if (result <= 0) {
                 throw new IllegalArgumentException("Результат не может быть отрицательным");
             }
-            return arabicToRoman.get(result);
+            return arabicToRoman(result);
         } else {
             return String.valueOf(result);
         }
@@ -92,19 +76,51 @@ public class Calculator {
             Integer.parseInt(input);
             return true;
         } catch (NumberFormatException e) {
-
-
             return false;
         }
     }
 
-     static boolean isRomanNumber(String input) {
+    public static boolean isRomanNumber(String input) {
         return romanToArabic.containsKey(input);
     }
+
+    public static int romanToArabic(String input) {
+        int result = 0;
+        int prevValue = 0;
+
+        for (int i = input.length() - 1; i >= 0; i--) {
+            int value = romanSymbolToValue(input.charAt(i));
+            if (value >= prevValue) {
+                result += value;
+            } else {
+                result -= value;
+            }
+            prevValue = value;
+        }
+
+        return result;
+    }
+
+    public static String arabicToRoman(int number) {
+        if (number < 1 || number > 100) {
+            throw new IllegalArgumentException("Некорректное арабское число. Допустимы значения от 1 до 100");
+        }
+
+        String romanNumber = "";
+
+        for (int i = 0; i < arabicValues.length; i++) {
+            while (number >= arabicValues[i]) {
+                romanNumber += romanSymbols[i];
+                number -= arabicValues[i];
+            }
+        }
+
+        return romanNumber;
+    }
+
     public static final Map<String, Integer> romanToArabic = new HashMap<>();
 
     static {
-
         romanToArabic.put("I", 1);
         romanToArabic.put("II", 2);
         romanToArabic.put("III", 3);
@@ -117,29 +133,18 @@ public class Calculator {
         romanToArabic.put("X", 10);
     }
 
-    public static final Map<Integer, String> arabicToRoman = new HashMap<>();
+    public static  int[] arabicValues = { 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+    public static  String[] romanSymbols = { "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
 
-    static {
-
-
-        arabicToRoman.put(1, "I");
-        arabicToRoman.put(2, "II");
-        arabicToRoman.put(3, "III");
-        arabicToRoman.put(4, "IV");
-        arabicToRoman.put(5, "V");
-        arabicToRoman.put(6, "VI");
-        arabicToRoman.put(7, "VII");
-        arabicToRoman.put(8, "VIII");
-        arabicToRoman.put(9, "IX");
-        arabicToRoman.put(10, "X");
-        arabicToRoman.put(20, "XX");
-        arabicToRoman.put(30, "XXX");
-        arabicToRoman.put(40, "XL");
-        arabicToRoman.put(50, "L");
-        arabicToRoman.put(60, "LX");
-        arabicToRoman.put(70, "LXX");
-        arabicToRoman.put(80, "LXXX");
-        arabicToRoman.put(90, "XC");
-        arabicToRoman.put(100, "C");
+    public static int romanSymbolToValue(char symbol) {
+        if (symbol == 'I') {
+            return 1;
+        } else if (symbol == 'V') {
+            return 5;
+        } else if (symbol == 'X') {
+            return 10;
+        } else {
+            throw new IllegalArgumentException("Некорректный символ римской цифры: " + symbol);
+        }
     }
 }
